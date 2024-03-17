@@ -74,6 +74,19 @@ def add_user():
         show_game_window()
 
 # RSA шифрование данных
+def RSA():
+    # Чтение данных из файла
+    with open('DataFile.json', 'r') as file:
+        data = file.read()
+
+    # Генерация ключей
+    public_key, private_key = generate_keys()
+    # Шифрование данных
+    encrypted_data = encrypt(data, public_key)
+
+    # Запись зашифрованных данных в файл
+    with open('EncryptedDataFile.json', 'w') as file:
+        file.write(' '.join(map(str, encrypted_data)))
 # Функция для проверки простоты числа
 def is_prime(num):
     if num < 2:
@@ -169,28 +182,6 @@ sign_btn.pack(pady=15)
 
 login_btn = tk.Button(text="Зарегистрироваться", command=add_user, bg='black', fg="white", font='Bahnschrift 16')
 login_btn.pack()
-
-def RSA():
-    # Чтение данных из файла
-    with open('DataFile.json', 'r') as file:
-        data = file.read()
-
-    # Генерация ключей
-    public_key, private_key = generate_keys()
-
-    # Шифрование данных
-    encrypted_data = encrypt(data, public_key)
-
-    # Запись зашифрованных данных в файл
-    with open('EncryptedDataFile.json', 'w') as file:
-        file.write(' '.join(map(str, encrypted_data)))
-
-    # Дешифрование данных
-    decrypted_data = decrypt(encrypted_data, private_key)
-
-    # Запись дешифрованных данных в файл
-    with open('DecryptedDataFile.json', 'w') as file:
-        file.write(decrypted_data)
 
 # всплывающие подсказки
 tk.TipLogin = Hovertip(login_entry,
