@@ -135,7 +135,7 @@ def mode1(u, enabled, s):
                     screen.blit(ai, BOT[i])
                     pygame.display.update()
                     i = i + 1
-                    # определение позиции клика игрока
+            # определение позиции клика игрока
             if event.type == MOUSEBUTTONDOWN:
                 pos = list(event.pos)
                 flag = 0

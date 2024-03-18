@@ -5,9 +5,6 @@ from idlelib.tooltip import Hovertip
 import os, random, math
 import game
 
-# Запуск окна входа
-def drow_win():
-    root.mainloop()
 def show_game_window():
     root.destroy()
     game.play_init()
