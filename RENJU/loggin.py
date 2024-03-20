@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import messagebox as mb
-from idlelib.tooltip import Hovertip
 import os, random, math
 import game
 
@@ -46,7 +45,8 @@ def add_user():
     else:
         if len(login) < 3 or len(password) < 4 or len(login) > 15 or len(password) > 15:
             mb.showwarning('Ошибка регистрации',
-                           'Проверьте количество символов, возможно, оно меньше или больше допустимого.')
+                           'Логин должен быть более 3 символов , макс. длина 15 символов!\n'
+                           'Пароль должен быть более 4 символов, макс. длина 15 символов!')
             return
         elif not any(char.isdigit() for char in login):
             mb.showwarning('Ошибка регистрации', 'Логин должен содержать хотя бы одну цифру.')
@@ -180,9 +180,4 @@ sign_btn.pack(pady=15)
 login_btn = tk.Button(text="Зарегистрироваться", command=add_user, bg='black', fg="white", font='Bahnschrift 16')
 login_btn.pack()
 
-# всплывающие подсказки
-tk.TipLogin = Hovertip(login_entry,
-'Логин должен быть более 3 символов\n и содержать хотя бы одну цифру,\n макс. длина 15 символов')
-tk.TipPassword = Hovertip(password_entry,
-'Пароль должен быть более 4 символов\n и содержать хотя бы одну цифру и букву,\n макс. длина 15 символов')
 root.mainloop()
