@@ -1,61 +1,61 @@
+# функция реализует минимаксный алгоритм
 def attack(player, otherplayer, depth, maxdepth, A, B):
-    a = []
+    a = [] # обновляем списки
     b = []
+    # проверка победы бота и достижения макс глубины поиска ходов
     if isgameover(player) or depth == maxdepth:
-        e = evaluate(player, otherplayer)
+        e = evaluate(player, otherplayer) # возврат оценки эффективности хода
         return e
+    # лучшие значения координаты и оценки эффективности хода
     bestmove = None
     bestscore = -1000
-    move = getmoves(player, otherplayer)
+    move = getmoves(player, otherplayer) # получение координат лучшего хода
     for m in move:
-        a = player+[(m)]
-        b = otherplayer+[]
-        score = attack(b, a, depth+1, maxdepth, -B, -max(A, bestscore))
+        a = player+[(m)] # записываем координаты искомого хода в список ходов бота
+        b = otherplayer+[] # записываем пустые координаты хода игрока
+        score = attack(b, a, depth+1, maxdepth, -B, -max(A, bestscore)) # рекурсивно вызываем функцию
         score = -score
-        if score > bestscore:
-            bestscore = score
-            bestmove = m
-            if bestscore >= B:
+        if score > bestscore: # если лучшее значение < текущего
+            bestscore = score # присваиваем текущее лучшему
+            bestmove = m # ход становится лучшим
+            if bestscore >= B: # альфа-бета отсечение
                 return bestscore
-    if depth == 0:
-        player.append((bestmove))
-    return bestscore
+    if depth == 0: # если ход бота
+        player.append((bestmove)) # записываем координаты лучшего хода
+    return bestscore # возвращаем лучшую оценку
 
+# функция для определения победы бота, вернет Тру если найдется пятерка камней бота
 def isgameover(play):
     I = 0
-    while I < len(play):
+    while I < len(play): # пока не закончились ходы бота
         a = (play[I][0], play[I][1])
-        # поиск 5 горизонтальных
         n = 1
         while n <= 5:
-            if (a[0]+40 * n, a[1]) in play:
+            if (a[0]+40 * n, a[1]) in play: # поиск 5 горизонтальных
                 n = n+1
             else:
                 break
         if n == 5:
             return True
-        # поиск 5 диагональных вниз-вправо
         n = 1
         while n <= 5:
-            if (a[0]+40 * n, a[1]+40 * n) in play:
+            if (a[0]+40 * n, a[1]+40 * n) in play: # поиск 5 диагональных вниз-вправо
                 n = n+1
             else:
                 break
         if n == 5:
             return True
-        # поиск 5 диагональных вниз-влево
         n = 1
         while n <= 5:
-            if (a[0]+40 * n, a[1]-40 * n) in play:
+            if (a[0]+40 * n, a[1]-40 * n) in play: # поиск 5 диагональных вниз-влево
                 n = n+1
             else:
                 break
         if n == 5:
             return True
-        # поиск 5 вертикальных
         n = 1
         while n <= 5:
-            if (a[0], a[1]+40 * n) in play:
+            if (a[0], a[1]+40 * n) in play: # поиск 5 вертикальных
                 n = n+1
             else:
                 break
@@ -64,11 +64,11 @@ def isgameover(play):
         I = I+1
 
 def getmoves(pl1, pl2):
-    moves = []
-    used = pl1+pl2
-    p = []
+    moves = [] # список для ходов бота
+    used = pl1+pl2 # все использованные ходы
+    p = [] # обновляем список
     s1 = 0
-    for u in used:
+    for u in used:# проверка на доступность клетки и ход бота
         if (u[0], u[1]-40) not in used:
             if (u[0], u[1]-40) not in moves:
                 moves.append((u[0], u[1]-40)) # вверх
@@ -94,28 +94,28 @@ def getmoves(pl1, pl2):
             if (u[0]-40, u[1]-40) not in moves:
                 moves.append((u[0]-40, u[1]-40)) # вверх-влево
     s1 = 0
-    des = []
+    des = [] # список для лучших ходов
     for m in moves:
-        if m[0] > 0 and m[0] < 600 and m[1] > 0 and m[1] < 600:
+        if m[0] > 0 and m[0] < 600 and m[1] > 0 and m[1] < 600: # проверка хода бота в пределах поля
             p = []
-            p = pl1+[m]
-            s2 = evaluate(p, pl2)
-            if s2 > s1:
-                s1 = s2
-                des = []
+            p = pl1+[m] # запись последнего хода
+            s2 = evaluate(p, pl2) # оценка эффективности хода
+            if s2 > s1: # если нашелся ход лучше
+                s1 = s2 # запоминаем оценку
+                des = [] # обновляем список лучших ходов
                 if m not in des:
-                    des.append((m))
-            if s2 == s1:
+                    des.append((m)) # записываем координаты хода
+            if s2 == s1: # если оценки равны
                 if m not in des:
-                    des.append((m))
+                    des.append((m)) # записываем координаты хода
     return des
 
 def evaluate(pl1, play):
     p = []
     p = pl1+[]
     pl2 = play+[]
-    p.remove(p[len(p)-1])
-    m = pl1[len(pl1)-1]
+    p.remove(p[len(p)-1]) # удаляем пустой список
+    m = pl1[len(pl1)-1] # записываем последний ход
     # поиск 5 в ряд
     # горизонтально 
     if (m[0]+40, m[1]) in p and (m[0]+80, m[1]) in p and (m[0]+120, m[1]) in p and (m[0]+160, m[1]) in p:

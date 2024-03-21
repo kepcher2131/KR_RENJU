@@ -59,7 +59,7 @@ def add_user():
         lines = file.readlines()
         for line in lines:
             stored_data = line.strip().split('•')
-            if len(stored_data) == 2:  # Проверяем, что есть логин и пароль
+            if len(stored_data) == 2:
                 stored_login, _ = stored_data
                 if login == stored_login:
                     mb.showwarning("Регистрация", "Пользователь с таким именем уже существует")
@@ -67,8 +67,8 @@ def add_user():
     with open('DataFile.json', 'a') as file:
         file.write(f'{login}•{password}\n')
         mb.showinfo('Успешная регистрация', 'Вы успешно зарегистрировались!')
-        RSA()
-        show_game_window()
+    RSA()
+    show_game_window()
 
 # RSA шифрование данных
 def RSA():
@@ -84,6 +84,7 @@ def RSA():
     # Запись зашифрованных данных в файл
     with open('EncryptedDataFile.json', 'w') as file:
         file.write(' '.join(map(str, encrypted_data)))
+
 # Функция для проверки простоты числа
 def is_prime(num):
     if num < 2:
