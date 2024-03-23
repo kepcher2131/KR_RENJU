@@ -8,19 +8,19 @@ def attack(player, otherplayer, depth, maxdepth, A, B):
         return e
     # лучшие значения координаты и оценки эффективности хода
     bestmove = None
-    bestscore = -1000
+    bestscore = -1000Р
     move = getmoves(player, otherplayer) # получение координат лучшего хода
     for m in move:
         a = player+[(m)] # записываем координаты искомого хода в список ходов бота
         b = otherplayer+[] # записываем пустые координаты хода игрока
-        score = attack(b, a, depth+1, maxdepth, -B, -max(A, bestscore)) # рекурсивно вызываем функцию
+        score = attack(b, a, depth+1, maxdepth, -B, -max(A, bestscore)) # рекурсивно вызываем функцию для игрока
         score = -score
         if score > bestscore: # если лучшее значение < текущего
             bestscore = score # присваиваем текущее лучшему
             bestmove = m # ход становится лучшим
             if bestscore >= B: # альфа-бета отсечение
                 return bestscore
-    if depth == 0: # если ход бота
+    if depth == 0: # если ход бота т.е глубина поиска равна 0
         player.append((bestmove)) # записываем координаты лучшего хода
     return bestscore # возвращаем лучшую оценку
 
